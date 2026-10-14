@@ -13,6 +13,7 @@
   {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
+          bear
           clang
           clang-tools
       ];
