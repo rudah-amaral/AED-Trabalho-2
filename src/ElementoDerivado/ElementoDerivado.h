@@ -1,22 +1,31 @@
+#ifndef ELEMENTODERIVADO_H
+#define ELEMENTODERIVADO_H
+
 #include "../Elemento/Elemento.h"
 
-#ifndef DERIVADOEXEMPLO_H
-#define DERIVADOEXEMPLO_H
-
-class ElementoDerivado : Elemento {
+// Primeira classe concreta de demonstração.
+//
+// A herança é PÚBLICA: "ElementoDerivado é um Elemento". Isso preserva a
+// relação "é um" e permite guardar um ElementoDerivado em um Elemento*,
+// que é exatamente o que o polimorfismo da Parte I precisa.
+// Em C++, a herança padrão de "class" é privada; por isso o "public" é
+// obrigatório aqui.
+class ElementoDerivado : public Elemento {
 public:
   ElementoDerivado(int id, int atributoExemplo);
-  // O identificador override assume duas funções:
-  // 1ª - Ela indica intenção para o leitor, especificamente a intenção de
-  // que estamos sobrecarregando um método virtual puro da classe pai.
-  // 2ª - Ela indica para o compilador que o método sobrecarregado é
-  // originalmente da classe pai, permitindo que ele consiga checar em tempo de
-  // compilação que estamos de fato sobrescrevendo um método ao invés de estar
-  // adicionando um novo, nos dando mensagens de erro mais condizentes caso
-  // ocorram.
+
+  // Métodos específicos desta classe (além do imprimirInfo herdado).
+  int getAtributoExemplo() const;
+  void setAtributoExemplo(int valor);
+
+  // O "override" avisa o compilador que este método sobrescreve um método
+  // virtual da classe pai. Se a assinatura não bater (por exemplo, faltar
+  // const), o compilador gera erro em vez de criar um método novo sem querer.
   void imprimirInfo() const override;
 
 private:
+  // Atributo próprio da classe derivada. É privado: nem a classe pai nem
+  // outras classes conseguem acessá-lo diretamente.
   int atributoExemplo;
 };
 

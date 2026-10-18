@@ -1,30 +1,34 @@
 #ifndef ELEMENTO_H
 #define ELEMENTO_H
 
+// Classe abstrata que representa qualquer elemento que pode ser armazenado
+// nas estruturas de dados do trabalho. Ela define o "contrato" mínimo que
+// todos os elementos concretos devem cumprir: ter um ID e saber se apresentar.
 class Elemento {
 public:
-  // Sobrescrevemos o construtor padrão, estabelecendo um parâmetro int.
-  Elemento(int id);
+  // Construtor protegido? Não: ele é público para que as classes derivadas
+  // possam chamá-lo na lista de inicialização. O "explicit" impede que um int
+  // seja convertido implicitamente em um Elemento.
+  explicit Elemento(int id);
 
-  // Declaramos um getter para o atributo int.
-  int getId() const;
+  // Getter público e const: o ID é um atributo protegido, então o acesso
+  // externo acontece exclusivamente por aqui. O const garante que o método
+  // não altera o estado do objeto.
+  int getID() const;
 
-  // Declaramos um método virtual puro, o que torna a classe automaticamente
-  // abstrata e, portanto, impedimos a sua instanciação.
-  // As classes que herdarem de Elemento tem como compromisso implementar esse
-  // método.
+  // Método virtual puro: torna a classe abstrata (não pode ser instanciada)
+  // e obriga todas as classes concretas a implementarem sua própria versão.
   virtual void imprimirInfo() const = 0;
 
+  // Destrutor virtual: essencial para que, ao deletar um objeto através de um
+  // ponteiro para Elemento, o destrutor da classe derivada seja chamado.
+  // Sem ele, o comportamento é indefinido (e recursos da derivada podem vazar).
+  virtual ~Elemento() = default;
+
 protected:
-  // Id é um atributo protegido, isso o torna acessível apenas para a classe
-  // Elemento e seus herdeiros. Porém, como Elemento é uma classe abstrata (ou
-  // seja, que não podemos instanciar), id é somente acessível para as classes
-  // herdeiras.
-  //
-  // NOTA: Acredito que id poderia ser um atributo privado, inacessível para
-  // qualquer classe que não Elemento, já que declaramos um getter público para
-  // ela.
-  int id;
+  // ID é protegido: acessível apenas por Elemento e por suas classes
+  // derivadas. Como Elemento é abstrata, na prática ele é usado pelas filhas.
+  int ID;
 };
 
 #endif

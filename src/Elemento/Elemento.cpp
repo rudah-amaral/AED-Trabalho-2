@@ -1,9 +1,9 @@
 #include "Elemento.h"
 
-// Para a implementação do construtor, dizemos que o id do objeto instanciado
-// (this) recebe o valor do parâmetro id.
-Elemento::Elemento(int id) { this->id = id; }
+// Lista de inicialização: o atributo ID é inicializado diretamente com o
+// valor do parâmetro, antes do corpo do construtor. É a forma idiomática de
+// inicializar membros em C++.
+Elemento::Elemento(int id) : ID(id) {}
 
-// De forma semelhante, a implementação de getId retorna o id do elemento
-// instanciado.
-int Elemento::getId() const { return this->id; }
+// getter const: apenas devolve o valor de ID, sem modificar o objeto.
+int Elemento::getID() const { return this->ID; }
