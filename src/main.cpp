@@ -55,6 +55,14 @@ int main() {
   }
   std::cout << "\n";
 
+  // o PDF exige percorrer a estrutura chamando imprimirInfo() em cada elemento
+  std::cout << "Percurso com imprimirInfo() (cada tipo responde do seu jeito):\n";
+  for (int i = 0; i < lista.tamanho(); ++i) {
+    std::cout << "Elemento " << i << ":\n";
+    lista.obter(i)->imprimirInfo();
+    std::cout << "\n";
+  }
+
   std::cout << "Busca pelo ID 20: "
             << (lista.buscarPeloId(20) != nullptr ? "encontrado"
                                                   : "nao encontrado")
