@@ -23,6 +23,9 @@ public:
   // const), o compilador gera erro em vez de criar um método novo sem querer.
   void imprimirInfo() const override;
 
+  // Versao compacta, usada quando a lista imprime todos os elementos.
+  void imprimirResumo() const override;
+
 private:
   // Atributo próprio da classe derivada. É privado: nem a classe pai nem
   // outras classes conseguem acessá-lo diretamente.

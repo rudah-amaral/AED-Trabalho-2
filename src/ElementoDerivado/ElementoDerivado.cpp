@@ -29,3 +29,9 @@ void ElementoDerivado::imprimirInfo() const {
   std::cout << "Tambem tenho um atributo da minha propria classe que vale: "
             << this->atributoExemplo << std::endl;
 }
+
+// Versao compacta: uma linha por elemento, usada nas listas.
+void ElementoDerivado::imprimirResumo() const {
+  std::cout << "ElementoDerivado | ID " << this->getID() << " | valor "
+            << this->atributoExemplo << std::endl;
+}

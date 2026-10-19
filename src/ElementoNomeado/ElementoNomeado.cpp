@@ -21,3 +21,9 @@ void ElementoNomeado::imprimirInfo() const {
   std::cout << "Meu ID herdado: " << this->getID() << std::endl;
   std::cout << "Meu nome (atributo proprio): " << this->nome << std::endl;
 }
+
+// Versao compacta: uma linha por elemento, usada nas listas.
+void ElementoNomeado::imprimirResumo() const {
+  std::cout << "ElementoNomeado | ID " << this->getID() << " | nome "
+            << this->nome << std::endl;
+}

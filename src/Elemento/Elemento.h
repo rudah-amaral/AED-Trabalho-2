@@ -20,6 +20,10 @@ public:
   // e obriga todas as classes concretas a implementarem sua própria versão.
   virtual void imprimirInfo() const = 0;
 
+  // Versao compacta (uma linha), usada quando a estrutura imprime a lista
+  // inteira. Cada tipo mostra o ID e o seu dado proprio.
+  virtual void imprimirResumo() const = 0;
+
   // Destrutor virtual: essencial para que, ao deletar um objeto através de um
   // ponteiro para Elemento, o destrutor da classe derivada seja chamado.
   // Sem ele, o comportamento é indefinido (e recursos da derivada podem vazar).

@@ -22,6 +22,9 @@ public:
   // Sobrescreve o método virtual puro de Elemento.
   void imprimirInfo() const override;
 
+  // Versao compacta, usada quando a lista imprime todos os elementos.
+  void imprimirResumo() const override;
+
 private:
   std::string nome;
 };
