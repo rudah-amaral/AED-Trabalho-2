@@ -144,47 +144,62 @@ ArvoreBinariaBusca::No *ArvoreBinariaBusca::removeMin(No *no) {
 
 // percurso em ordem: esquerda, no, direita (O(n))
 void ArvoreBinariaBusca::emOrdem() const {
-  emOrdemNo(raiz);
+  bool primeiro = true;
+  emOrdemNo(raiz, primeiro);
   std::cout << "\n";
 }
 
-void ArvoreBinariaBusca::emOrdemNo(const No *no) const {
+void ArvoreBinariaBusca::emOrdemNo(const No *no, bool &primeiro) const {
   if (no == nullptr) {
     return;
   }
-  emOrdemNo(no->esq);
-  std::cout << no->dado->getID() << " ";
-  emOrdemNo(no->dir);
+  emOrdemNo(no->esq, primeiro);
+  if (!primeiro) {
+    std::cout << " ";
+  }
+  std::cout << no->dado->getID();
+  primeiro = false;
+  emOrdemNo(no->dir, primeiro);
 }
 
 // percurso pre-ordem: no, esquerda, direita (O(n))
 void ArvoreBinariaBusca::preOrdem() const {
-  preOrdemNo(raiz);
+  bool primeiro = true;
+  preOrdemNo(raiz, primeiro);
   std::cout << "\n";
 }
 
-void ArvoreBinariaBusca::preOrdemNo(const No *no) const {
+void ArvoreBinariaBusca::preOrdemNo(const No *no, bool &primeiro) const {
   if (no == nullptr) {
     return;
   }
-  std::cout << no->dado->getID() << " ";
-  preOrdemNo(no->esq);
-  preOrdemNo(no->dir);
+  if (!primeiro) {
+    std::cout << " ";
+  }
+  std::cout << no->dado->getID();
+  primeiro = false;
+  preOrdemNo(no->esq, primeiro);
+  preOrdemNo(no->dir, primeiro);
 }
 
 // percurso pos-ordem: esquerda, direita, no (O(n))
 void ArvoreBinariaBusca::posOrdem() const {
-  posOrdemNo(raiz);
+  bool primeiro = true;
+  posOrdemNo(raiz, primeiro);
   std::cout << "\n";
 }
 
-void ArvoreBinariaBusca::posOrdemNo(const No *no) const {
+void ArvoreBinariaBusca::posOrdemNo(const No *no, bool &primeiro) const {
   if (no == nullptr) {
     return;
   }
-  posOrdemNo(no->esq);
-  posOrdemNo(no->dir);
-  std::cout << no->dado->getID() << " ";
+  posOrdemNo(no->esq, primeiro);
+  posOrdemNo(no->dir, primeiro);
+  if (!primeiro) {
+    std::cout << " ";
+  }
+  std::cout << no->dado->getID();
+  primeiro = false;
 }
 
 // altura em numero de niveis (O(n))

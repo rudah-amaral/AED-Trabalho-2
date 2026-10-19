@@ -54,9 +54,9 @@ private:
   No *minimo(No *no) const;                     // O(h)
   No *removeMin(No *no);                        // O(h)
   void limpa(No *no);                           // O(n)
-  void emOrdemNo(const No *no) const;           // O(n)
-  void preOrdemNo(const No *no) const;          // O(n)
-  void posOrdemNo(const No *no) const;          // O(n)
+  void emOrdemNo(const No *no, bool &primeiro) const;  // O(n)
+  void preOrdemNo(const No *no, bool &primeiro) const; // O(n)
+  void posOrdemNo(const No *no, bool &primeiro) const; // O(n)
   int alturaNo(const No *no) const;             // O(n)
 };
 
