@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "ArvoreBinariaBusca/ArvoreBinariaBusca.h"
 #include "Deque/Deque.h"
 #include "Elemento/Elemento.h"
 #include "ElementoDerivado/ElementoDerivado.h"
@@ -212,6 +213,69 @@ int main() {
   std::cout << "\n";
 
   std::cout << "tamanho: " << deque.tamanho() << "\n";
+  std::cout << "\n";
+
+  // 7. arvore binaria de busca: ordem pelo ID e percursos
+  secao("7. Arvore binaria de busca");
+
+  ArvoreBinariaBusca arvore;
+  arvore.inserir(new ElementoDerivado(50, 5));
+  arvore.inserir(new ElementoNomeado(30, "Ana"));
+  arvore.inserir(new ElementoDerivado(70, 7));
+  arvore.inserir(new ElementoNomeado(20, "Bia"));
+  arvore.inserir(new ElementoDerivado(40, 4));
+  arvore.inserir(new ElementoNomeado(60, "Caio"));
+  arvore.inserir(new ElementoDerivado(80, 8));
+  arvore.inserir(new ElementoNomeado(35, "Duda"));
+
+  std::cout << "Apos 8 insercoes (fora de ordem) - tamanho "
+            << arvore.tamanho() << ", altura " << arvore.altura() << ":\n";
+  std::cout << "  emOrdem:  ";
+  arvore.emOrdem();
+  std::cout << "  preOrdem: ";
+  arvore.preOrdem();
+  std::cout << "  posOrdem: ";
+  arvore.posOrdem();
+  std::cout << "\n";
+
+  Elemento *buscado = arvore.buscarPeloId(35);
+  std::cout << "Busca pelo ID 35: ";
+  if (buscado != nullptr) {
+    buscado->imprimirResumo();
+  } else {
+    std::cout << "nao encontrado\n";
+  }
+
+  std::cout << "Busca pelo ID 99: "
+            << (arvore.buscarPeloId(99) != nullptr ? "encontrado"
+                                                   : "nao encontrado")
+            << "\n";
+
+  Elemento *dup = new ElementoDerivado(50, 99);
+  if (arvore.inserir(dup)) {
+    std::cout << "Inserir o ID 50 de novo: entrou (nao deveria!)\n";
+  } else {
+    std::cout << "Inserir o ID 50 de novo: rejeitado (duplicado)\n";
+    delete dup; // a arvore nao assumiu a posse
+  }
+
+  std::cout << "\nRemovendo 20 (folha)...\n";
+  arvore.removerPeloId(20);
+  std::cout << "  emOrdem: ";
+  arvore.emOrdem();
+
+  std::cout << "Removendo 30 (um filho)...\n";
+  arvore.removerPeloId(30);
+  std::cout << "  emOrdem: ";
+  arvore.emOrdem();
+
+  std::cout << "Removendo 50 (dois filhos, sucessor 60)...\n";
+  arvore.removerPeloId(50);
+  std::cout << "  emOrdem: ";
+  arvore.emOrdem();
+
+  std::cout << "Altura final: " << arvore.altura()
+            << " | tamanho: " << arvore.tamanho() << "\n";
   std::cout << "\n";
 
   std::cout << "=== Fim da demonstracao ===\n";
