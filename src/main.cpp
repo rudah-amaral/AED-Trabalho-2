@@ -46,13 +46,11 @@ int main() {
   lista.inserirNoInicio(new ElementoNomeado(20, "Ana"));
   lista.inserirNoFinal(new ElementoNomeado(30, "Bia"));
 
-  std::cout << "Apos as insercoes:\n";
+  std::cout << "Apos as insercoes (tamanho " << lista.tamanho()
+            << ", capacidade " << lista.capacidade() << "):\n";
   for (int i = 0; i < lista.tamanho(); ++i) {
-    if (i > 0) {
-      std::cout << "\n";
-    }
-    std::cout << "Elemento " << i << ":\n";
-    lista.obter(i)->imprimirInfo();
+    std::cout << "  [" << i << "] ";
+    lista.obter(i)->imprimirResumo();
   }
   std::cout << "\n";
 
@@ -67,13 +65,11 @@ int main() {
   std::cout << "Removendo o elemento de ID 10...\n";
   lista.removerPeloId(10);
 
-  std::cout << "Apos a alteracao e a remocao:\n";
+  std::cout << "Apos a alteracao e a remocao (tamanho " << lista.tamanho()
+            << "):\n";
   for (int i = 0; i < lista.tamanho(); ++i) {
-    if (i > 0) {
-      std::cout << "\n";
-    }
-    std::cout << "Elemento " << i << ":\n";
-    lista.obter(i)->imprimirInfo();
+    std::cout << "  [" << i << "] ";
+    lista.obter(i)->imprimirResumo();
   }
   std::cout << "\n";
 
@@ -106,13 +102,12 @@ int main() {
   ordenada.inserirNoInicio(new ElementoDerivado(40, 4));
   ordenada.inserirNoFinal(new ElementoNomeado(50, "Ana"));
 
-  std::cout << "Apos as insercoes (fora de ordem):\n";
+  std::cout << "Apos as insercoes (fora de ordem) - tamanho "
+            << ordenada.tamanho() << ", capacidade " << ordenada.capacidade()
+            << ":\n";
   for (int i = 0; i < ordenada.tamanho(); ++i) {
-    if (i > 0) {
-      std::cout << "\n";
-    }
-    std::cout << "Elemento " << i << ":\n";
-    ordenada.obter(i)->imprimirInfo();
+    std::cout << "  [" << i << "] ";
+    ordenada.obter(i)->imprimirResumo();
   }
   std::cout << "\n";
 
@@ -141,13 +136,11 @@ int main() {
   std::cout << "Removendo o ID 40...\n";
   ordenada.removerPeloId(40);
 
-  std::cout << "Apos a alteracao e a remocao:\n";
+  std::cout << "Apos a alteracao e a remocao (tamanho " << ordenada.tamanho()
+            << "):\n";
   for (int i = 0; i < ordenada.tamanho(); ++i) {
-    if (i > 0) {
-      std::cout << "\n";
-    }
-    std::cout << "Elemento " << i << ":\n";
-    ordenada.obter(i)->imprimirInfo();
+    std::cout << "  [" << i << "] ";
+    ordenada.obter(i)->imprimirResumo();
   }
   std::cout << "\n";
 
@@ -165,8 +158,8 @@ int main() {
   pilha.empilhar(new ElementoDerivado(70, 7));
   pilha.empilhar(new ElementoNomeado(80, "oitenta"));
 
-  std::cout << "Topo da pilha:\n";
-  pilha.consultarTopo()->imprimirInfo();
+  std::cout << "Topo da pilha:\n  ";
+  pilha.consultarTopo()->imprimirResumo();
   std::cout << "\n";
 
   std::cout << "cheia? " << (pilha.pilhaCheia() ? "sim" : "nao")
@@ -175,8 +168,8 @@ int main() {
 
   std::cout << "Desempilhando...\n";
   pilha.desempilhar();
-  std::cout << "Novo topo:\n";
-  pilha.consultarTopo()->imprimirInfo();
+  std::cout << "Novo topo:\n  ";
+  pilha.consultarTopo()->imprimirResumo();
   std::cout << "\n";
 
   // 5. pilha adaptadora sobre a lista simplesmente encadeada
@@ -185,8 +178,8 @@ int main() {
   PilhaEncadeada pilhaEncadeada;
   pilhaEncadeada.empilhar(new ElementoDerivado(90, 9));
 
-  std::cout << "Topo da pilha:\n";
-  pilhaEncadeada.consultarTopo()->imprimirInfo();
+  std::cout << "Topo da pilha:\n  ";
+  pilhaEncadeada.consultarTopo()->imprimirResumo();
   std::cout << "\n";
 
   std::cout << "vazia? " << (pilhaEncadeada.pilhaVazia() ? "sim" : "nao")
@@ -201,12 +194,12 @@ int main() {
   deque.inserirNoFim(new ElementoDerivado(120, 12));
   deque.inserirNoInicio(new ElementoDerivado(100, 10));
 
-  std::cout << "Inicio:\n";
-  deque.consultarInicio()->imprimirInfo();
+  std::cout << "Inicio:\n  ";
+  deque.consultarInicio()->imprimirResumo();
   std::cout << "\n";
 
-  std::cout << "Fim:\n";
-  deque.consultarFim()->imprimirInfo();
+  std::cout << "Fim:\n  ";
+  deque.consultarFim()->imprimirResumo();
   std::cout << "\n";
 
   std::cout << "tamanho: " << deque.tamanho() << "\n";
@@ -214,8 +207,8 @@ int main() {
   std::cout << "Removendo as pontas...\n";
   deque.removerInicio();
   deque.removerFim();
-  std::cout << "Novo inicio:\n";
-  deque.consultarInicio()->imprimirInfo();
+  std::cout << "Novo inicio:\n  ";
+  deque.consultarInicio()->imprimirResumo();
   std::cout << "\n";
 
   std::cout << "tamanho: " << deque.tamanho() << "\n";
