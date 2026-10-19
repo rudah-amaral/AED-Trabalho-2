@@ -9,75 +9,93 @@
 #include "Pilha/Pilha.h"
 #include "PilhaEncadeada/PilhaEncadeada.h"
 
+// cabecalho de secao; cada secao termina com uma linha em branco
+static void secao(const char *titulo) {
+  std::cout << "=== " << titulo << " ===\n";
+}
+
 int main() {
-  // As duas classes concretas são guardadas no mesmo vetor de ponteiros
-  // para Elemento. Isso só é possível porque a herança é pública.
+  // 1. polimorfismo: a mesma chamada, objetos de tipos diferentes
+  secao("1. Polimorfismo com Elemento*");
+
   Elemento *elementos[2] = {
       new ElementoDerivado(2, 5),
       new ElementoNomeado(7, "Italo"),
   };
 
-  std::cout << "\n--- Chamando imprimirInfo() pelo ponteiro de Elemento ---\n";
-
-  // A chamada é resolvida em tempo de execução: cada objeto executa a sua
-  // própria versão de imprimirInfo(), graças ao método virtual.
-  for (Elemento *elemento : elementos) {
-    elemento->imprimirInfo();
-    std::cout << std::endl;
+  for (int i = 0; i < 2; ++i) {
+    if (i > 0) {
+      std::cout << "\n";
+    }
+    std::cout << "Objeto " << i << ":\n";
+    elementos[i]->imprimirInfo();
   }
+  std::cout << "\n";
 
-  // O delete é feito através do ponteiro de Elemento. O destrutor virtual
-  // da base garante que o destrutor correto de cada classe derivada rode.
+  // o delete via Elemento* funciona por causa do destrutor virtual
   for (Elemento *elemento : elementos) {
     delete elemento;
   }
 
-  // Lista nao ordenada: insere, busca, altera e remove.
+  // 2. lista nao ordenada: insere, busca, altera e remove
+  secao("2. Lista nao ordenada");
+
   ListaNaoOrdenada lista;
 
   lista.inserirNoFinal(new ElementoDerivado(10, 1));
   lista.inserirNoInicio(new ElementoNomeado(20, "Ana"));
   lista.inserirNoFinal(new ElementoNomeado(30, "Bia"));
 
-  std::cout << "--- Lista nao ordenada (apos insercoes) ---\n";
+  std::cout << "Apos as insercoes:\n";
   for (int i = 0; i < lista.tamanho(); ++i) {
+    if (i > 0) {
+      std::cout << "\n";
+    }
+    std::cout << "Elemento " << i << ":\n";
     lista.obter(i)->imprimirInfo();
-    std::cout << std::endl;
   }
+  std::cout << "\n";
 
   std::cout << "Busca pelo ID 20: "
             << (lista.buscarPeloId(20) != nullptr ? "encontrado"
                                                   : "nao encontrado")
-            << "\n\n";
+            << "\n";
 
   std::cout << "Alterando o elemento de ID 20...\n";
   lista.alterarPeloId(20, new ElementoDerivado(20, 99));
 
-  std::cout << "Removendo o elemento de ID 10...\n\n";
+  std::cout << "Removendo o elemento de ID 10...\n";
   lista.removerPeloId(10);
 
-  std::cout << "--- Lista apos alteracao e remocao ---\n";
+  std::cout << "Apos a alteracao e a remocao:\n";
   for (int i = 0; i < lista.tamanho(); ++i) {
+    if (i > 0) {
+      std::cout << "\n";
+    }
+    std::cout << "Elemento " << i << ":\n";
     lista.obter(i)->imprimirInfo();
-    std::cout << std::endl;
   }
+  std::cout << "\n";
 
-  std::cout << "Removendo o primeiro...\n";
+  std::cout << "Removendo o primeiro e o ultimo...\n";
   lista.removerPrimeiro();
-  std::cout << "Removendo o ultimo...\n";
   lista.removerUltimo();
   std::cout << "A lista esta vazia? " << (lista.vazia() ? "sim" : "nao")
             << "\n";
+  std::cout << "\n";
 
-  // Teste de crescimento: a capacidade inicial e 10; 15 insercoes
-  // fazem o bloco dobrar para 20.
+  // 2.1 crescimento: 15 insercoes dobram o bloco de 10 para 20
+  secao("2.1 Crescimento da lista");
+
   ListaNaoOrdenada crescente;
+  std::cout << "capacidade inicial: " << crescente.capacidade() << "\n";
+
   for (int i = 0; i < 15; ++i) {
     crescente.inserirNoFinal(new ElementoNomeado(100 + i, "Crescimento"));
   }
-  std::cout << "\n--- Crescimento ---\n";
-  std::cout << "tamanho: " << crescente.tamanho()
+  std::cout << "apos 15 insercoes -> tamanho: " << crescente.tamanho()
             << " | capacidade: " << crescente.capacidade() << "\n";
+  std::cout << "\n";
 
   // Lista ordenada: mantem a ordem pelo ID, rejeita duplicados e usa
   // busca binaria.
