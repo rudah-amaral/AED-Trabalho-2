@@ -7,9 +7,7 @@
 // o corpo deste construtor é executado. O atributo próprio também é
 // inicializado diretamente na lista.
 ElementoDerivado::ElementoDerivado(int id, int atributoExemplo)
-    : Elemento(id), atributoExemplo(atributoExemplo) {
-  std::cout << "Eu sou impresso toda vez que sou instanciado" << std::endl;
-}
+    : Elemento(id), atributoExemplo(atributoExemplo) {}
 
 // Getter const: devolve o atributo próprio sem alterar o objeto.
 int ElementoDerivado::getAtributoExemplo() const {
