@@ -97,19 +97,24 @@ int main() {
             << " | capacidade: " << crescente.capacidade() << "\n";
   std::cout << "\n";
 
-  // Lista ordenada: mantem a ordem pelo ID, rejeita duplicados e usa
-  // busca binaria.
+  // 3. lista ordenada: mantem a ordem pelo ID e rejeita duplicados
+  secao("3. Lista ordenada");
+
   ListaOrdenada ordenada;
 
-  ordenada.inserirNoFinal(new ElementoNomeado(30, "Bia"));
-  ordenada.inserirNoInicio(new ElementoDerivado(10, 1));
-  ordenada.inserirNoFinal(new ElementoNomeado(20, "Ana"));
+  ordenada.inserirNoFinal(new ElementoNomeado(60, "Bia"));
+  ordenada.inserirNoInicio(new ElementoDerivado(40, 4));
+  ordenada.inserirNoFinal(new ElementoNomeado(50, "Ana"));
 
-  std::cout << "\n--- Lista ordenada (apos insercoes fora de ordem) ---\n";
+  std::cout << "Apos as insercoes (fora de ordem):\n";
   for (int i = 0; i < ordenada.tamanho(); ++i) {
+    if (i > 0) {
+      std::cout << "\n";
+    }
+    std::cout << "Elemento " << i << ":\n";
     ordenada.obter(i)->imprimirInfo();
-    std::cout << std::endl;
   }
+  std::cout << "\n";
 
   std::cout << "Ordem dos IDs:";
   for (int i = 0; i < ordenada.tamanho(); ++i) {
@@ -117,30 +122,34 @@ int main() {
   }
   std::cout << "\n";
 
-  Elemento *duplicado = new ElementoDerivado(20, 2);
+  Elemento *duplicado = new ElementoDerivado(50, 5);
   if (ordenada.inserirNoFinal(duplicado)) {
-    std::cout << "Inserir o ID 20 de novo: entrou (nao deveria!)\n";
+    std::cout << "Inserir o ID 50 de novo: entrou (nao deveria!)\n";
   } else {
-    std::cout << "Inserir o ID 20 de novo: rejeitado (duplicado)\n";
+    std::cout << "Inserir o ID 50 de novo: rejeitado (duplicado)\n";
     delete duplicado; // a lista nao assumiu a posse
   }
 
-  std::cout << "Busca pelo ID 20: "
-            << (ordenada.buscarPeloId(20) != nullptr ? "encontrado"
+  std::cout << "Busca pelo ID 50: "
+            << (ordenada.buscarPeloId(50) != nullptr ? "encontrado"
                                                      : "nao encontrado")
             << "\n";
 
-  std::cout << "Alterando o elemento de ID 20...\n";
-  ordenada.alterarPeloId(20, new ElementoDerivado(20, 99));
+  std::cout << "Alterando o elemento de ID 50...\n";
+  ordenada.alterarPeloId(50, new ElementoDerivado(50, 99));
 
-  std::cout << "Removendo o ID 10...\n";
-  ordenada.removerPeloId(10);
+  std::cout << "Removendo o ID 40...\n";
+  ordenada.removerPeloId(40);
 
-  std::cout << "\n--- Lista ordenada (apos alteracao e remocao) ---\n";
+  std::cout << "Apos a alteracao e a remocao:\n";
   for (int i = 0; i < ordenada.tamanho(); ++i) {
+    if (i > 0) {
+      std::cout << "\n";
+    }
+    std::cout << "Elemento " << i << ":\n";
     ordenada.obter(i)->imprimirInfo();
-    std::cout << std::endl;
   }
+  std::cout << "\n";
 
   std::cout << "Removendo o primeiro e o ultimo...\n";
   ordenada.removerPrimeiro();
