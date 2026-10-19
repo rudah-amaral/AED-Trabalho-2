@@ -156,44 +156,72 @@ int main() {
   ordenada.removerUltimo();
   std::cout << "A lista ordenada esta vazia? "
             << (ordenada.vazia() ? "sim" : "nao") << "\n";
+  std::cout << "\n";
 
-  // Pilha por composicao com a lista sequencial.
+  // 4. pilha: composicao com a lista sequencial
+  secao("4. Pilha (lista sequencial)");
+
   Pilha pilha;
-  pilha.empilhar(new ElementoDerivado(1, 11));
-  pilha.empilhar(new ElementoNomeado(2, "dois"));
+  pilha.empilhar(new ElementoDerivado(70, 7));
+  pilha.empilhar(new ElementoNomeado(80, "oitenta"));
 
-  std::cout << "\n--- Pilha (lista sequencial) ---\n";
-  std::cout << "topo: ID " << pilha.consultarTopo()->getID()
-            << " | tamanho: " << pilha.tamanho() << "\n";
+  std::cout << "Topo da pilha:\n";
+  pilha.consultarTopo()->imprimirInfo();
+  std::cout << "\n";
+
   std::cout << "cheia? " << (pilha.pilhaCheia() ? "sim" : "nao")
-            << " | vazia? " << (pilha.pilhaVazia() ? "sim" : "nao") << "\n";
+            << " | vazia? " << (pilha.pilhaVazia() ? "sim" : "nao")
+            << " | tamanho: " << pilha.tamanho() << "\n";
+
+  std::cout << "Desempilhando...\n";
   pilha.desempilhar();
-  std::cout << "topo depois do desempilhar: ID "
-            << pilha.consultarTopo()->getID() << "\n";
+  std::cout << "Novo topo:\n";
+  pilha.consultarTopo()->imprimirInfo();
+  std::cout << "\n";
 
-  // Pilha adaptadora sobre a lista simplesmente encadeada.
+  // 5. pilha adaptadora sobre a lista simplesmente encadeada
+  secao("5. Pilha encadeada (lista simples)");
+
   PilhaEncadeada pilhaEncadeada;
-  pilhaEncadeada.empilhar(new ElementoDerivado(7, 7));
+  pilhaEncadeada.empilhar(new ElementoDerivado(90, 9));
 
-  std::cout << "\n--- Pilha encadeada ---\n";
-  std::cout << "topo: ID " << pilhaEncadeada.consultarTopo()->getID()
-            << " | vazia? " << (pilhaEncadeada.pilhaVazia() ? "sim" : "nao")
-            << "\n";
+  std::cout << "Topo da pilha:\n";
+  pilhaEncadeada.consultarTopo()->imprimirInfo();
+  std::cout << "\n";
 
-  // Deque adaptador sobre a lista duplamente encadeada.
+  std::cout << "vazia? " << (pilhaEncadeada.pilhaVazia() ? "sim" : "nao")
+            << " | tamanho: " << pilhaEncadeada.tamanho() << "\n";
+  std::cout << "\n";
+
+  // 6. deque adaptador sobre a lista duplamente encadeada
+  secao("6. Deque (lista duplamente encadeada)");
+
   Deque deque;
-  deque.inserirNoInicio(new ElementoNomeado(10, "dez"));
-  deque.inserirNoFim(new ElementoDerivado(20, 2));
-  deque.inserirNoInicio(new ElementoDerivado(5, 5));
+  deque.inserirNoInicio(new ElementoNomeado(110, "onze"));
+  deque.inserirNoFim(new ElementoDerivado(120, 12));
+  deque.inserirNoInicio(new ElementoDerivado(100, 10));
 
-  std::cout << "\n--- Deque ---\n";
-  std::cout << "inicio: ID " << deque.consultarInicio()->getID()
-            << " | fim: ID " << deque.consultarFim()->getID()
-            << " | tamanho: " << deque.tamanho() << "\n";
+  std::cout << "Inicio:\n";
+  deque.consultarInicio()->imprimirInfo();
+  std::cout << "\n";
+
+  std::cout << "Fim:\n";
+  deque.consultarFim()->imprimirInfo();
+  std::cout << "\n";
+
+  std::cout << "tamanho: " << deque.tamanho() << "\n";
+
+  std::cout << "Removendo as pontas...\n";
   deque.removerInicio();
   deque.removerFim();
-  std::cout << "depois de remover as pontas -> tamanho: " << deque.tamanho()
-            << " | inicio: ID " << deque.consultarInicio()->getID() << "\n";
+  std::cout << "Novo inicio:\n";
+  deque.consultarInicio()->imprimirInfo();
+  std::cout << "\n";
+
+  std::cout << "tamanho: " << deque.tamanho() << "\n";
+  std::cout << "\n";
+
+  std::cout << "=== Fim da demonstracao ===\n";
 
   return 0;
 }
