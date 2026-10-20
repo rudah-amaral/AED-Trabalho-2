@@ -30,6 +30,9 @@ public:
   void preOrdem() const; // O(n)
   void posOrdem() const; // O(n)
 
+  // estrutura indentada: mostra o ID e os dados de cada no
+  void imprimirEstrutura() const; // O(n)
+
   int altura() const; // O(n)
   int tamanho() const; // O(1)
   bool vazia() const;  // O(1)
@@ -57,6 +60,7 @@ private:
   void emOrdemNo(const No *no, bool &primeiro) const;  // O(n)
   void preOrdemNo(const No *no, bool &primeiro) const; // O(n)
   void posOrdemNo(const No *no, bool &primeiro) const; // O(n)
+  void estruturaNo(const No *no, const char *lado, int nivel) const; // O(n)
   int alturaNo(const No *no) const;             // O(n)
 };
 

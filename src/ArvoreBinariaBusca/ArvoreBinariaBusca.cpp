@@ -202,10 +202,29 @@ void ArvoreBinariaBusca::posOrdemNo(const No *no, bool &primeiro) const {
   primeiro = false;
 }
 
-// altura em numero de niveis (O(n))
-int ArvoreBinariaBusca::altura() const { return alturaNo(raiz); }
+// estrutura indentada: raiz, depois esq/dir de cada no (O(n))
+void ArvoreBinariaBusca::imprimirEstrutura() const {
+  estruturaNo(raiz, "raiz: ", 0);
+}
 
-int ArvoreBinariaBusca::alturaNo(const No *no) const {
+void ArvoreBinariaBusca::estruturaNo(const No *no, const char *lado,
+                                     int nivel) const {
+  if (no == nullptr) {
+    return;
+  }
+
+  for (int i = 0; i < nivel; ++i) {
+    std::cout << "  ";
+  }
+  std::cout << lado;
+  no->dado->imprimirResumo();
+
+  estruturaNo(no->esq, "esq: ", nivel + 1);
+  estruturaNo(no->dir, "dir: ", nivel + 1);
+}
+
+// altura em numero de niveis (O(n))
+int ArvoreBinariaBusca::altura() const { return alturaNo(raiz); }int ArvoreBinariaBusca::alturaNo(const No *no) const {
   if (no == nullptr) {
     return 0;
   }
