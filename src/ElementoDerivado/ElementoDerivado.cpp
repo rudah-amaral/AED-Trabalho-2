@@ -1,5 +1,6 @@
 #include "ElementoDerivado.h"
 
+#include <iomanip>
 #include <iostream>
 
 // O construtor da derivada chama o construtor da base na lista de
@@ -22,16 +23,18 @@ void ElementoDerivado::setAtributoExemplo(int valor) {
 // Implementação do método virtual puro herdado de Elemento.
 // Se este método não existisse, ElementoDerivado continuaria abstrata.
 void ElementoDerivado::imprimirInfo() const {
-  std::cout << "Oi, eu sou um ElementoDerivado!" << std::endl;
+  std::cout << "    Oi, eu sou um ElementoDerivado!" << std::endl;
   // getID() é público e herdado; por isso pode ser chamado aqui.
-  std::cout << "Tenho um atributo herdado ID que vale: " << this->getID()
+  std::cout << "    Tenho um atributo herdado ID que vale: " << this->getID()
             << std::endl;
-  std::cout << "Tambem tenho um atributo da minha propria classe que vale: "
-            << this->atributoExemplo << std::endl;
+  std::cout
+      << "    Tambem tenho um atributo da minha propria classe que vale: "
+      << this->atributoExemplo << std::endl;
 }
 
-// Versao compacta: uma linha por elemento, usada nas listas.
+// Versao compacta em colunas, usada nas tabelas das listas.
 void ElementoDerivado::imprimirResumo() const {
-  std::cout << "ElementoDerivado | ID " << this->getID() << " | valor "
+  std::cout << std::left << std::setw(16) << "ElementoDerivado" << " | "
+            << std::right << std::setw(4) << this->getID() << " | valor: "
             << this->atributoExemplo << std::endl;
 }

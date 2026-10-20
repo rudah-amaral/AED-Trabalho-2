@@ -1,5 +1,6 @@
 #include "ElementoNomeado.h"
 
+#include <iomanip>
 #include <iostream>
 
 // A base é construída primeiro (Elemento(id)); depois o atributo nome é
@@ -17,13 +18,14 @@ void ElementoNomeado::setNome(const std::string &nome) { this->nome = nome; }
 // ElementoDerivado: é isso que evidencia o polimorfismo quando as duas
 // classes são chamadas pelo mesmo ponteiro de Elemento.
 void ElementoNomeado::imprimirInfo() const {
-  std::cout << "Oi, eu sou um ElementoNomeado!" << std::endl;
-  std::cout << "Meu ID herdado: " << this->getID() << std::endl;
-  std::cout << "Meu nome (atributo proprio): " << this->nome << std::endl;
+  std::cout << "    Oi, eu sou um ElementoNomeado!" << std::endl;
+  std::cout << "    Meu ID herdado: " << this->getID() << std::endl;
+  std::cout << "    Meu nome (atributo proprio): " << this->nome << std::endl;
 }
 
-// Versao compacta: uma linha por elemento, usada nas listas.
+// Versao compacta em colunas, usada nas tabelas das listas.
 void ElementoNomeado::imprimirResumo() const {
-  std::cout << "ElementoNomeado | ID " << this->getID() << " | nome "
+  std::cout << std::left << std::setw(16) << "ElementoNomeado" << " | "
+            << std::right << std::setw(4) << this->getID() << " | nome: "
             << this->nome << std::endl;
 }
