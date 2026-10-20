@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <iostream>
 
 #include "ArvoreBinariaBusca/ArvoreBinariaBusca.h"
@@ -10,14 +11,41 @@
 #include "Pilha/Pilha.h"
 #include "PilhaEncadeada/PilhaEncadeada.h"
 
-// cabecalho de secao; cada secao termina com uma linha em branco
+// cabecalho de secao em caixa
 static void secao(const char *titulo) {
-  std::cout << "=== " << titulo << " ===\n";
+  std::cout << "\n============================================================\n";
+  std::cout << " " << titulo << "\n";
+  std::cout << "============================================================\n\n";
+}
+
+// cabecalho da tabela de elementos
+static void cabecalhoTabela() {
+  std::cout << "  idx | " << std::left << std::setw(16) << "tipo" << " | "
+            << std::right << std::setw(4) << "ID" << " | dado\n";
+  std::cout << "  ----+------------------+------+----------------\n";
+}
+
+// tabela da lista nao ordenada (indice + resumo de cada elemento)
+static void imprimirTabela(const ListaNaoOrdenada &lista) {
+  cabecalhoTabela();
+  for (int i = 0; i < lista.tamanho(); ++i) {
+    std::cout << "  " << std::right << std::setw(3) << i << " | ";
+    lista.obter(i)->imprimirResumo();
+  }
+}
+
+// tabela da lista ordenada
+static void imprimirTabela(const ListaOrdenada &lista) {
+  cabecalhoTabela();
+  for (int i = 0; i < lista.tamanho(); ++i) {
+    std::cout << "  " << std::right << std::setw(3) << i << " | ";
+    lista.obter(i)->imprimirResumo();
+  }
 }
 
 int main() {
   // 1. polimorfismo: a mesma chamada, objetos de tipos diferentes
-  secao("1. Polimorfismo com Elemento*");
+  secao("1. POLIMORFISMO COM ELEMENTO*");
 
   Elemento *elementos[2] = {
       new ElementoDerivado(2, 5),
@@ -25,13 +53,11 @@ int main() {
   };
 
   for (int i = 0; i < 2; ++i) {
-    if (i > 0) {
-      std::cout << "\n";
-    }
-    std::cout << "Objeto " << i << ":\n";
+    std::cout << "Objeto " << i << " -> ";
+    elementos[i]->imprimirResumo();
     elementos[i]->imprimirInfo();
+    std::cout << "\n";
   }
-  std::cout << "\n";
 
   // o delete via Elemento* funciona por causa do destrutor virtual
   for (Elemento *elemento : elementos) {
@@ -39,194 +65,258 @@ int main() {
   }
 
   // 2. lista nao ordenada: insere, busca, altera e remove
-  secao("2. Lista nao ordenada");
+  secao("2. LISTA NAO ORDENADA");
 
   ListaNaoOrdenada lista;
 
-  lista.inserirNoFinal(new ElementoDerivado(10, 1));
-  lista.inserirNoInicio(new ElementoNomeado(20, "Ana"));
-  lista.inserirNoFinal(new ElementoNomeado(30, "Bia"));
+  Elemento *e = new ElementoDerivado(10, 1);
+  std::cout << "Insercao no final:    ";
+  e->imprimirResumo();
+  lista.inserirNoFinal(e);
 
-  std::cout << "Apos as insercoes (tamanho " << lista.tamanho()
-            << ", capacidade " << lista.capacidade() << "):\n";
-  for (int i = 0; i < lista.tamanho(); ++i) {
-    std::cout << "  [" << i << "] ";
-    lista.obter(i)->imprimirResumo();
-  }
+  e = new ElementoNomeado(20, "Ana");
+  std::cout << "Insercao no inicio:   ";
+  e->imprimirResumo();
+  lista.inserirNoInicio(e);
+
+  e = new ElementoNomeado(30, "Bia");
+  std::cout << "Insercao no final:    ";
+  e->imprimirResumo();
+  lista.inserirNoFinal(e);
+
+  std::cout << "\nLista apos as insercoes (tamanho " << lista.tamanho()
+            << ", capacidade " << lista.capacidade() << ")\n";
+  imprimirTabela(lista);
   std::cout << "\n";
 
   // o PDF exige percorrer a estrutura chamando imprimirInfo() em cada elemento
-  std::cout << "Percurso com imprimirInfo() (cada tipo responde do seu jeito):\n";
+  std::cout << "Apresentacao detalhada (imprimirInfo, uma chamada por "
+               "elemento)\n";
   for (int i = 0; i < lista.tamanho(); ++i) {
-    std::cout << "Elemento " << i << ":\n";
+    std::cout << "  [" << i << "] ";
+    lista.obter(i)->imprimirResumo();
     lista.obter(i)->imprimirInfo();
     std::cout << "\n";
   }
 
-  std::cout << "Busca pelo ID 20: "
-            << (lista.buscarPeloId(20) != nullptr ? "encontrado"
-                                                  : "nao encontrado")
-            << "\n";
+  Elemento *achado = lista.buscarPeloId(20);
+  std::cout << "Busca pelo ID 20: ";
+  if (achado != nullptr) {
+    std::cout << "encontrado -> ";
+    achado->imprimirResumo();
+  } else {
+    std::cout << "nao encontrado\n";
+  }
 
-  std::cout << "Alterando o elemento de ID 20...\n";
-  lista.alterarPeloId(20, new ElementoDerivado(20, 99));
+  std::cout << "Alterando o ID 20:\n";
+  Elemento *antigo = lista.buscarPeloId(20);
+  std::cout << "  antes:  ";
+  antigo->imprimirResumo();
+  Elemento *novo = new ElementoDerivado(20, 99);
+  std::cout << "  depois: ";
+  novo->imprimirResumo();
+  lista.alterarPeloId(20, novo);
 
-  std::cout << "Removendo o elemento de ID 10...\n";
+  std::cout << "Removendo o ID 10:\n  ";
+  lista.buscarPeloId(10)->imprimirResumo();
   lista.removerPeloId(10);
 
-  std::cout << "Apos a alteracao e a remocao (tamanho " << lista.tamanho()
-            << "):\n";
-  for (int i = 0; i < lista.tamanho(); ++i) {
-    std::cout << "  [" << i << "] ";
-    lista.obter(i)->imprimirResumo();
-  }
+  std::cout << "\nLista apos a alteracao e a remocao (tamanho "
+            << lista.tamanho() << ")\n";
+  imprimirTabela(lista);
   std::cout << "\n";
 
-  std::cout << "Removendo o primeiro e o ultimo...\n";
+  std::cout << "Removendo o primeiro:\n  ";
+  lista.obter(0)->imprimirResumo();
   lista.removerPrimeiro();
+
+  std::cout << "Removendo o ultimo:\n  ";
+  lista.obter(lista.tamanho() - 1)->imprimirResumo();
   lista.removerUltimo();
+
   std::cout << "A lista esta vazia? " << (lista.vazia() ? "sim" : "nao")
             << "\n";
-  std::cout << "\n";
 
   // 2.1 crescimento: 15 insercoes dobram o bloco de 10 para 20
-  secao("2.1 Crescimento da lista");
+  secao("2.1 CRESCIMENTO DA LISTA");
 
   ListaNaoOrdenada crescente;
-  std::cout << "capacidade inicial: " << crescente.capacidade() << "\n";
+  std::cout << "Capacidade inicial: " << crescente.capacidade() << "\n";
 
   for (int i = 0; i < 15; ++i) {
     crescente.inserirNoFinal(new ElementoNomeado(100 + i, "Crescimento"));
   }
-  std::cout << "apos 15 insercoes -> tamanho: " << crescente.tamanho()
-            << " | capacidade: " << crescente.capacidade() << "\n";
-  std::cout << "\n";
+
+  std::cout << "Apos 15 insercoes: tamanho " << crescente.tamanho()
+            << " | capacidade " << crescente.capacidade() << "\n";
+  std::cout << "Primeiro: ";
+  crescente.obter(0)->imprimirResumo();
+  std::cout << "Ultimo:   ";
+  crescente.obter(crescente.tamanho() - 1)->imprimirResumo();
 
   // 3. lista ordenada: mantem a ordem pelo ID e rejeita duplicados
-  secao("3. Lista ordenada");
+  secao("3. LISTA ORDENADA");
 
   ListaOrdenada ordenada;
 
-  ordenada.inserirNoFinal(new ElementoNomeado(60, "Bia"));
-  ordenada.inserirNoInicio(new ElementoDerivado(40, 4));
-  ordenada.inserirNoFinal(new ElementoNomeado(50, "Ana"));
+  e = new ElementoNomeado(60, "Bia");
+  std::cout << "Insercao no final:  ";
+  e->imprimirResumo();
+  ordenada.inserirNoFinal(e);
 
-  std::cout << "Apos as insercoes (fora de ordem) - tamanho "
+  e = new ElementoDerivado(40, 4);
+  std::cout << "Insercao no inicio: ";
+  e->imprimirResumo();
+  ordenada.inserirNoInicio(e);
+
+  e = new ElementoNomeado(50, "Ana");
+  std::cout << "Insercao no final:  ";
+  e->imprimirResumo();
+  ordenada.inserirNoFinal(e);
+
+  std::cout << "\nLista apos as insercoes fora de ordem (tamanho "
             << ordenada.tamanho() << ", capacidade " << ordenada.capacidade()
-            << ":\n";
-  for (int i = 0; i < ordenada.tamanho(); ++i) {
-    std::cout << "  [" << i << "] ";
-    ordenada.obter(i)->imprimirResumo();
-  }
-  std::cout << "\n";
-
-  std::cout << "Ordem dos IDs:";
+            << ")\n";
+  imprimirTabela(ordenada);
+  std::cout << "IDs em ordem:";
   for (int i = 0; i < ordenada.tamanho(); ++i) {
     std::cout << " " << ordenada.obter(i)->getID();
   }
-  std::cout << "\n";
+  std::cout << "\n\n";
 
-  Elemento *duplicado = new ElementoDerivado(50, 5);
-  if (ordenada.inserirNoFinal(duplicado)) {
-    std::cout << "Inserir o ID 50 de novo: entrou (nao deveria!)\n";
+  Elemento *dup = new ElementoDerivado(50, 5);
+  std::cout << "Inserir o ID 50 de novo:\n  ";
+  dup->imprimirResumo();
+  if (ordenada.inserirNoFinal(dup)) {
+    std::cout << "  entrou (nao deveria!)\n";
   } else {
-    std::cout << "Inserir o ID 50 de novo: rejeitado (duplicado)\n";
-    delete duplicado; // a lista nao assumiu a posse
+    std::cout << "  rejeitado (duplicado)\n";
+    delete dup; // a lista nao assumiu a posse
   }
 
-  std::cout << "Busca pelo ID 50: "
-            << (ordenada.buscarPeloId(50) != nullptr ? "encontrado"
-                                                     : "nao encontrado")
-            << "\n";
+  achado = ordenada.buscarPeloId(50);
+  std::cout << "Busca pelo ID 50: ";
+  if (achado != nullptr) {
+    std::cout << "encontrado -> ";
+    achado->imprimirResumo();
+  } else {
+    std::cout << "nao encontrado\n";
+  }
 
-  std::cout << "Alterando o elemento de ID 50...\n";
-  ordenada.alterarPeloId(50, new ElementoDerivado(50, 99));
+  std::cout << "Alterando o ID 50:\n";
+  antigo = ordenada.buscarPeloId(50);
+  std::cout << "  antes:  ";
+  antigo->imprimirResumo();
+  novo = new ElementoDerivado(50, 99);
+  std::cout << "  depois: ";
+  novo->imprimirResumo();
+  ordenada.alterarPeloId(50, novo);
 
-  std::cout << "Removendo o ID 40...\n";
+  std::cout << "Removendo o ID 40:\n  ";
+  ordenada.buscarPeloId(40)->imprimirResumo();
   ordenada.removerPeloId(40);
 
-  std::cout << "Apos a alteracao e a remocao (tamanho " << ordenada.tamanho()
-            << "):\n";
-  for (int i = 0; i < ordenada.tamanho(); ++i) {
-    std::cout << "  [" << i << "] ";
-    ordenada.obter(i)->imprimirResumo();
-  }
+  std::cout << "\nLista apos a alteracao e a remocao (tamanho "
+            << ordenada.tamanho() << ")\n";
+  imprimirTabela(ordenada);
   std::cout << "\n";
 
-  std::cout << "Removendo o primeiro e o ultimo...\n";
+  std::cout << "Removendo o primeiro:\n  ";
+  ordenada.obter(0)->imprimirResumo();
   ordenada.removerPrimeiro();
+
+  std::cout << "Removendo o ultimo:\n  ";
+  ordenada.obter(ordenada.tamanho() - 1)->imprimirResumo();
   ordenada.removerUltimo();
+
   std::cout << "A lista ordenada esta vazia? "
             << (ordenada.vazia() ? "sim" : "nao") << "\n";
-  std::cout << "\n";
 
   // 4. pilha: composicao com a lista sequencial
-  secao("4. Pilha (lista sequencial)");
+  secao("4. PILHA (LISTA SEQUENCIAL)");
 
   Pilha pilha;
-  pilha.empilhar(new ElementoDerivado(70, 7));
-  pilha.empilhar(new ElementoNomeado(80, "oitenta"));
 
-  std::cout << "Topo da pilha:\n  ";
+  e = new ElementoDerivado(70, 7);
+  std::cout << "Empilhando: ";
+  e->imprimirResumo();
+  pilha.empilhar(e);
+
+  e = new ElementoNomeado(80, "oitenta");
+  std::cout << "Empilhando: ";
+  e->imprimirResumo();
+  pilha.empilhar(e);
+
+  std::cout << "Topo: ";
   pilha.consultarTopo()->imprimirResumo();
-  std::cout << "\n";
-
   std::cout << "cheia? " << (pilha.pilhaCheia() ? "sim" : "nao")
             << " | vazia? " << (pilha.pilhaVazia() ? "sim" : "nao")
             << " | tamanho: " << pilha.tamanho() << "\n";
 
-  std::cout << "Desempilhando...\n";
-  pilha.desempilhar();
-  std::cout << "Novo topo:\n  ";
+  std::cout << "Desempilhando: ";
   pilha.consultarTopo()->imprimirResumo();
-  std::cout << "\n";
+  pilha.desempilhar();
+  std::cout << "Novo topo: ";
+  pilha.consultarTopo()->imprimirResumo();
 
   // 5. pilha adaptadora sobre a lista simplesmente encadeada
-  secao("5. Pilha encadeada (lista simples)");
+  secao("5. PILHA ENCADEADA (LISTA SIMPLES)");
 
   PilhaEncadeada pilhaEncadeada;
-  pilhaEncadeada.empilhar(new ElementoDerivado(90, 9));
+  e = new ElementoDerivado(90, 9);
+  std::cout << "Empilhando: ";
+  e->imprimirResumo();
+  pilhaEncadeada.empilhar(e);
 
-  std::cout << "Topo da pilha:\n  ";
+  std::cout << "Topo: ";
   pilhaEncadeada.consultarTopo()->imprimirResumo();
-  std::cout << "\n";
-
   std::cout << "vazia? " << (pilhaEncadeada.pilhaVazia() ? "sim" : "nao")
             << " | tamanho: " << pilhaEncadeada.tamanho() << "\n";
-  std::cout << "\n";
 
   // 6. deque adaptador sobre a lista duplamente encadeada
-  secao("6. Deque (lista duplamente encadeada)");
+  secao("6. DEQUE (LISTA DUPLAMENTE ENCADEADA)");
 
   Deque deque;
-  deque.inserirNoInicio(new ElementoNomeado(110, "onze"));
-  deque.inserirNoFim(new ElementoDerivado(120, 12));
-  deque.inserirNoInicio(new ElementoDerivado(100, 10));
 
-  std::cout << "Inicio:\n  ";
+  e = new ElementoNomeado(110, "onze");
+  std::cout << "Insercao no inicio: ";
+  e->imprimirResumo();
+  deque.inserirNoInicio(e);
+
+  e = new ElementoDerivado(120, 12);
+  std::cout << "Insercao no fim:    ";
+  e->imprimirResumo();
+  deque.inserirNoFim(e);
+
+  e = new ElementoDerivado(100, 10);
+  std::cout << "Insercao no inicio: ";
+  e->imprimirResumo();
+  deque.inserirNoInicio(e);
+
+  std::cout << "\ntamanho: " << deque.tamanho() << "\n";
+  std::cout << "Inicio: ";
   deque.consultarInicio()->imprimirResumo();
-  std::cout << "\n";
-
-  std::cout << "Fim:\n  ";
+  std::cout << "Fim:    ";
   deque.consultarFim()->imprimirResumo();
-  std::cout << "\n";
 
-  std::cout << "tamanho: " << deque.tamanho() << "\n";
-
-  std::cout << "Removendo as pontas...\n";
-  deque.removerInicio();
-  deque.removerFim();
-  std::cout << "Novo inicio:\n  ";
+  std::cout << "Removendo o inicio: ";
   deque.consultarInicio()->imprimirResumo();
-  std::cout << "\n";
+  deque.removerInicio();
 
+  std::cout << "Removendo o fim:    ";
+  deque.consultarFim()->imprimirResumo();
+  deque.removerFim();
+
+  std::cout << "Novo inicio: ";
+  deque.consultarInicio()->imprimirResumo();
   std::cout << "tamanho: " << deque.tamanho() << "\n";
-  std::cout << "\n";
 
-  // 7. arvore binaria de busca: ordem pelo ID e percursos
-  secao("7. Arvore binaria de busca");
+  // 7. arvore binaria de busca: ordem pelo ID, percursos e estrutura
+  secao("7. ARVORE BINARIA DE BUSCA");
 
   ArvoreBinariaBusca arvore;
+  std::cout << "Inserindo fora de ordem: 50, 30, 70, 20, 40, 60, 80, 35\n\n";
+
   arvore.inserir(new ElementoDerivado(50, 5));
   arvore.inserir(new ElementoNomeado(30, "Ana"));
   arvore.inserir(new ElementoDerivado(70, 7));
@@ -236,20 +326,24 @@ int main() {
   arvore.inserir(new ElementoDerivado(80, 8));
   arvore.inserir(new ElementoNomeado(35, "Duda"));
 
-  std::cout << "Apos 8 insercoes (fora de ordem) - tamanho "
-            << arvore.tamanho() << ", altura " << arvore.altura() << ":\n";
+  std::cout << "Arvore (tamanho " << arvore.tamanho() << ", altura "
+            << arvore.altura() << ")\n";
   std::cout << "  emOrdem:  ";
   arvore.emOrdem();
   std::cout << "  preOrdem: ";
   arvore.preOrdem();
   std::cout << "  posOrdem: ";
   arvore.posOrdem();
+
+  std::cout << "\nEstrutura (ID - elemento)\n";
+  arvore.imprimirEstrutura();
   std::cout << "\n";
 
-  Elemento *buscado = arvore.buscarPeloId(35);
+  achado = arvore.buscarPeloId(35);
   std::cout << "Busca pelo ID 35: ";
-  if (buscado != nullptr) {
-    buscado->imprimirResumo();
+  if (achado != nullptr) {
+    std::cout << "encontrado -> ";
+    achado->imprimirResumo();
   } else {
     std::cout << "nao encontrado\n";
   }
@@ -259,34 +353,39 @@ int main() {
                                                    : "nao encontrado")
             << "\n";
 
-  Elemento *dup = new ElementoDerivado(50, 99);
+  dup = new ElementoDerivado(50, 99);
+  std::cout << "Inserir o ID 50 de novo:\n  ";
+  dup->imprimirResumo();
   if (arvore.inserir(dup)) {
-    std::cout << "Inserir o ID 50 de novo: entrou (nao deveria!)\n";
+    std::cout << "  entrou (nao deveria!)\n";
   } else {
-    std::cout << "Inserir o ID 50 de novo: rejeitado (duplicado)\n";
+    std::cout << "  rejeitado (duplicado)\n";
     delete dup; // a arvore nao assumiu a posse
   }
 
-  std::cout << "\nRemovendo 20 (folha)...\n";
+  std::cout << "\nRemovendo 20 (folha):\n  ";
+  arvore.buscarPeloId(20)->imprimirResumo();
   arvore.removerPeloId(20);
   std::cout << "  emOrdem: ";
   arvore.emOrdem();
 
-  std::cout << "Removendo 30 (um filho)...\n";
+  std::cout << "Removendo 30 (um filho):\n  ";
+  arvore.buscarPeloId(30)->imprimirResumo();
   arvore.removerPeloId(30);
   std::cout << "  emOrdem: ";
   arvore.emOrdem();
 
-  std::cout << "Removendo 50 (dois filhos, sucessor 60)...\n";
+  std::cout << "Removendo 50 (dois filhos, sucessor 60):\n  ";
+  arvore.buscarPeloId(50)->imprimirResumo();
   arvore.removerPeloId(50);
   std::cout << "  emOrdem: ";
   arvore.emOrdem();
 
-  std::cout << "Altura final: " << arvore.altura()
-            << " | tamanho: " << arvore.tamanho() << "\n";
-  std::cout << "\n";
+  std::cout << "\nEstrutura final (tamanho " << arvore.tamanho()
+            << ", altura " << arvore.altura() << ")\n";
+  arvore.imprimirEstrutura();
 
-  std::cout << "=== Fim da demonstracao ===\n";
+  std::cout << "\n=== Fim da demonstracao ===\n";
 
   return 0;
 }
