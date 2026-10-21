@@ -139,7 +139,6 @@ Para gerar o arquivo `compile_commands.json` para habilitar compleção de códi
 | pilhaVazia            | O(1)          |
 | tamanho            | O(1)          |
 
-
 ### FilaEncadeada
 | *Operação*  | *Complexidade* |
 |------------------|-------------|
@@ -174,6 +173,25 @@ Para gerar o arquivo `compile_commands.json` para habilitar compleção de códi
 | posOrdemNo            | O(n)            |
 | estruturaNo            | O(n)            |
 | alturaNo            | O(n)            |
+
+### Grafo
+| *Operação*  | *Complexidade* |
+|------------------|-------------|
+| adicionarVertice            | O(n^2)            |
+| adicionarAresta            | O(n) -> O(1)            |
+| saoVizinhos            | O(n)            |
+| grau            | O(n)            |
+| buscaEmLargura            | O(V + E)            |
+| buscaEmProfundidade            | O(V + E)            |
+| numeroDeVertices            | O(1)            |
+| numeroDeArestas            | O(1)            |
+| vazio            | O(1)            |
+| imprimirMatriz            | O(V^2)            |
+| imprimirListas            | O(V + E)            |
+| indicePeloId            | O(n)            |
+| crescerEstruturas            | O(n^2)            |
+| limparListas            | O(V + E)            |
+| dfs            | O(V + E)            |
 
 
 ## Integrantes do Grupo
