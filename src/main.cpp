@@ -6,6 +6,7 @@
 #include "Elemento/Elemento.h"
 #include "ElementoDerivado/ElementoDerivado.h"
 #include "ElementoNomeado/ElementoNomeado.h"
+#include "Grafo/Grafo.h"
 #include "ListaNaoOrdenada/ListaNaoOrdenada.h"
 #include "ListaOrdenada/ListaOrdenada.h"
 #include "Pilha/Pilha.h"
@@ -384,6 +385,47 @@ int main() {
   std::cout << "\nEstrutura final (tamanho " << arvore.tamanho()
             << ", altura " << arvore.altura() << ")\n";
   arvore.imprimirEstrutura();
+
+  // 8. grafo: matriz e lista de adjacencia ao mesmo tempo
+  secao("8. GRAFO");
+
+  Grafo grafo;
+
+  std::cout << "Adicionando 6 vertices (IDs 10 a 60)...\n\n";
+  grafo.adicionarVertice(new ElementoNomeado(10, "A"));
+  grafo.adicionarVertice(new ElementoDerivado(20, 2));
+  grafo.adicionarVertice(new ElementoNomeado(30, "C"));
+  grafo.adicionarVertice(new ElementoDerivado(40, 4));
+  grafo.adicionarVertice(new ElementoNomeado(50, "E"));
+  grafo.adicionarVertice(new ElementoDerivado(60, 6));
+
+  std::cout << "Ligando 10-20, 10-30, 20-40, 30-40, 40-50 e 50-60...\n\n";
+  grafo.adicionarAresta(10, 20);
+  grafo.adicionarAresta(10, 30);
+  grafo.adicionarAresta(20, 40);
+  grafo.adicionarAresta(30, 40);
+  grafo.adicionarAresta(40, 50);
+  grafo.adicionarAresta(50, 60);
+
+  std::cout << "Vertices: " << grafo.numeroDeVertices()
+            << " | Arestas: " << grafo.numeroDeArestas() << "\n\n";
+
+  grafo.imprimirMatriz();
+  std::cout << "\n";
+  grafo.imprimirListas();
+  std::cout << "\n";
+
+  std::cout << "10 e 20 sao vizinhos? "
+            << (grafo.saoVizinhos(10, 20) ? "sim" : "nao") << "\n";
+  std::cout << "10 e 40 sao vizinhos? "
+            << (grafo.saoVizinhos(10, 40) ? "sim" : "nao") << "\n\n";
+
+  std::cout << "grau(10) = " << grafo.grau(10) << "\n";
+  std::cout << "grau(40) = " << grafo.grau(40) << "\n";
+  std::cout << "grau(60) = " << grafo.grau(60) << "\n\n";
+
+  grafo.buscaEmLargura(10);
+  grafo.buscaEmProfundidade(10);
 
   std::cout << "\n=== Fim da demonstracao ===\n";
 
