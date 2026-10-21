@@ -12,6 +12,7 @@
 #include "Pilha/Pilha.h"
 #include "PilhaEncadeada/PilhaEncadeada.h"
 #include "FilaSequencial/FilaSequencial.h"
+#include "FilaEncadeada/FilaEncadeada.h"
 
 // cabecalho de secao em caixa
 static void secao(const char *titulo) {
@@ -431,7 +432,7 @@ int main() {
   
 
 // 9. fila sequencial: adaptadora sobre a lista nao ordenada (FIFO)
-secao("8. FILA SEQUENCIAL (LISTA NAO ORDENADA)");
+secao("9. FILA SEQUENCIAL (LISTA NAO ORDENADA)");
  FilaSequencial fila;
 
  e = new ElementoDerivado(130, 13);
@@ -471,6 +472,47 @@ secao("8. FILA SEQUENCIAL (LISTA NAO ORDENADA)");
            << (fila.filaVazia() ? "sim" : "nao") << "\n";
 
 
+
+ // 10. fila encadeada: adaptadora sobre a lista simplesmente encadeada
+  secao("10. FILA ENCADEADA (LISTA SIMPLES)");
+
+  FilaEncadeada filaEnc;
+
+  e = new ElementoDerivado(160, 16);
+  std::cout << "Enfileirando: ";
+  e->imprimirResumo();
+  filaEnc.enfileirar(e);
+
+  e = new ElementoNomeado(170, "Gabi");
+  std::cout << "Enfileirando: ";
+  e->imprimirResumo();
+  filaEnc.enfileirar(e);
+
+  e = new ElementoDerivado(180, 18);
+  std::cout << "Enfileirando: ";
+  e->imprimirResumo();
+  filaEnc.enfileirar(e);
+
+  std::cout << "\ncheia? " << (filaEnc.filaCheia() ? "sim" : "nao")
+            << " | vazia? " << (filaEnc.filaVazia() ? "sim" : "nao") << "\n";
+  std::cout << "Inicio: ";
+  filaEnc.consultarInicio()->imprimirResumo();
+
+  //sai primeiro quem entrou primeiro
+  std::cout << "\nDesenfileirando: ";
+  filaEnc.consultarInicio()->imprimirResumo();
+  filaEnc.desenfileirar();
+
+  std::cout << "Desenfileirando: ";
+  filaEnc.consultarInicio()->imprimirResumo();
+  filaEnc.desenfileirar();
+
+  std::cout << "Novo inicio: ";
+  filaEnc.consultarInicio()->imprimirResumo();
+
+  filaEnc.desenfileirar();
+  std::cout << "Fila vazia apos esvaziar? "
+            << (filaEnc.filaVazia() ? "sim" : "nao") << "\n";
   
   std::cout << "\n=== Fim da demonstracao ===\n";
 
